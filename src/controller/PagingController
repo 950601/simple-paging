@@ -1,7 +1,7 @@
 	@RequestMapping(value="/getGisSearchData")
 	public void getPagerData(HttpServletResponse response,Integer page,Integer rows,String attribute) throws UnsupportedEncodingException{
 		attribute = new String(attribute.getBytes("8859_1"), "utf8");
-		Pager pager = this.baseServiceImpl.querySqlDataList(page, rows, sql, attribute);
+		Pager pager = this.baseService.getPager(page, rows, sql, attribute);
 		JSONObject json = new JSONObject();
 		json.put("total", pager.getRowCount());
 		JsonConfig config = new JsonConfig();  

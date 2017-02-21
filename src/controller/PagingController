@@ -1,4 +1,4 @@
-	@RequestMapping(value="/getGisSearchData")
+	@RequestMapping(value="/pageSearch")
 	public void getPagerData(HttpServletResponse response,Integer page,Integer rows,String attribute) throws UnsupportedEncodingException{
 		attribute = new String(attribute.getBytes("8859_1"), "utf8");
 		Pager pager = this.baseService.getPager(page, rows, sql, attribute);

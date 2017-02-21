@@ -1,0 +1,7 @@
+public class baseService{
+  public Pager getQueryDataList(Integer page,Integer rows,String sql,String attribute) {
+		Pager pager = this.baseDao.queryPagerData(page, rows, sql, attribute);
+		return pager;
+  }
+}
+

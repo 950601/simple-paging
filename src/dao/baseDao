@@ -1,0 +1,22 @@
+ public <T> Pager queryPagerData(int page, int rows, String SQL, String attribute) {
+    Pager pager = null;
+    try {
+      SQLQuery sqlQuery = getSession().createSQLQuery(SQL);
+      if(attribute!=null)
+          sqlQuery.setParameter(i, attributeList.get(i));
+      sqlQuery.setFirstResult((page - 1) * rows);
+      sqlQuery.setMaxResults(rows);
+      List list = sqlQuery.list();
+      String countSql = "select count(*) from (" + SQL + ") as t";
+      SQLQuery sqlQueryCount = getSession().createSQLQuery(countSql);
+      if(attribute!=null)
+          sqlQueryCount.setParameter(i, attributeList.get(i));
+      BigInteger rowCountBig = (BigInteger)sqlQueryCount.uniqueResult();
+      long rowCount = rowCountBig.longValue();
+      long pageCount = rowCount % rows == 0L ? rowCount / rows : rowCount / rows + 1L;
+      pager = new Pager(pageCount, rowCount, list);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return pager;
+  }

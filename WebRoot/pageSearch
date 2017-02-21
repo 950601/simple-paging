@@ -1,8 +1,8 @@
-##Must control ：
+## Must control ：
   <input type="hidden" id="pageNow">
 	<input type="hidden" id="pageTotal">
 	<input type="hidden" id="layerLabelType">
-##request method:
+## request method ：
 function searchPageList(pageType) {
 	var page = $("#pageNow").val();// 当前页码
 	var pageTotal = $("#pageTotal").val(); // 总页数

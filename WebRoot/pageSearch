@@ -1,0 +1,73 @@
+##Must control ：
+  <input type="hidden" id="pageNow">
+	<input type="hidden" id="pageTotal">
+	<input type="hidden" id="layerLabelType">
+##request method:
+function searchPageList(pageType) {
+	var page = $("#pageNow").val();// 当前页码
+	var pageTotal = $("#pageTotal").val(); // 总页数
+	if (pageTotal > 1 && page != '') {
+		if (pageType == 'up') { // 上一页
+			page = parseInt(page) - 1;
+		} else if (pageType == 'down') {// 下一页
+			page = parseInt(page) + 1;
+		}
+		if (page < 1) {
+			autoMsg("对不起，没有上一页了·", 5);
+		} else if (page > pageTotal) {
+			autoMsg("对不起，没有下一页了·", 5);
+		} else {
+			$("#pageNow").val(page);
+			gisSearch_search();
+		}
+	} else {
+		if (pageType == 'up') { // 上一页
+			autoMsg("对不起，没有上一页了·", 5);
+		} else if (pageType == 'down') {// 下一页
+			autoMsg("对不起，没有下一页了·", 5);
+		}
+	}
+}
+function search(type) { //type:判断是否为第一次请求	
+  if (validationGisSearch()) {
+		var attribute = $("#searchInput").val();// 
+		if (attribute == '全部') {
+			attribute = '';
+		}
+		var queryType = $("#searchSelect").val();// 
+		var pageNow = $("#pageNow").val();
+		var page;
+		if (type == 1 || pageNow == '') {// 
+			page = 1;
+		} else {
+			page = pageNow;
+		}
+		var rows = 15; 
+		var pageTotal; // 
+		$.ajax({
+			type : "post",
+			dataType : "json",
+			async : false,// 
+			url : '/pageSearch?page=' + page + '&rows=' + rows + '&attribute=' + attribute,
+			success : function(data) {
+				var total = data.total;
+				$('#totalB').html(total);
+				if (data && data.rows.length) {
+					pageTotal = (total + rows - 1) / rows; // 
+					pageTotal = parseInt(pageTotal);
+					$("#pageNow").val(page);
+					$("#pageTotal").val(pageTotal);
+          //.. to do something
+					html += '<div class="page">';
+					html += '<a class="page_top page_current" onclick="searchPageList(\'up\');" >上一页</a> <a class="page_number">' + page + '/' + pageTotal + '</a> <a class="page_next" onclick="searchPageList(\'down\');" >下一页</a>';
+					html += '</div>';
+					$('#ResultList').html(html);
+				} else {// 没有数据
+        
+				}
+			},
+			error : function(data) {
+				alert('请求错误！');
+			}
+		});
+}

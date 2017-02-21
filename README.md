@@ -1,2 +1,2 @@
 # simple-paging
-a simple method for java paging  
+A simple method for java paging  
